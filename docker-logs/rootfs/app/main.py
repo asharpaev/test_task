@@ -2,10 +2,9 @@ import docker
 import time
 import BaseHTTPServer
 from urlparse import urlparse, parse_qs
+from os import environ
 
-HOST_NAME = '0.0.0.0' # !!!REMEMBER TO CHANGE THIS!!!
-PORT_NUMBER = 9000 # Maybe set this to 9000.
-
+envs = ["HOST_NAME", "PORT_NUMBER", "DOCKER_HOST"]
 
 class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     def do_HEAD(s):
@@ -58,11 +57,14 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             s.wfile.write("<p>This service does not have page: %s </p>" % path)
             s.wfile.write("</body></html>")
 if __name__ == '__main__':
+    for env in envs:
+        if env in environ:
+            vars()[env] = environ.get(env)
     server_class = BaseHTTPServer.HTTPServer
-    httpd = server_class((HOST_NAME, PORT_NUMBER), MyHandler)
-    print time.asctime(), "Server Starts - %s:%s" % (HOST_NAME, PORT_NUMBER)
+    httpd = server_class((HOST_NAME, int(PORT_NUMBER) ), MyHandler)
+    print time.asctime(), "Server Starts - %s:%s" % (HOST_NAME, PORT_NUMBER )
     try:
-        client = docker.DockerClient(base_url='tcp://192.168.102.5:2376')
+        client = docker.DockerClient(base_url=DOCKER_HOST)
         httpd.serve_forever()
     except KeyboardInterrupt:
         pass

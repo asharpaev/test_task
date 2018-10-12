@@ -5,3 +5,7 @@ services:
       context: docker-logs
     ports:
       - "9000:9000"
+    environment:
+      - HOST_NAME=0.0.0.0
+      - PORT_NUMBER=9000
+      - DOCKER_HOST=tcp://192.168.102.5:2376

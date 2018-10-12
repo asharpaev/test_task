@@ -1,0 +1,7 @@
+version: "3"
+services:
+  docker-logs:
+    build:
+      context: docker-logs
+    ports:
+      - "9000:9000"

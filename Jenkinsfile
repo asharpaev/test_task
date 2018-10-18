@@ -6,6 +6,6 @@ node {
         sh "docker-compose build --no-cache"
     }
     stage('Deploy') {
-        sh "docker-compose up -d"
+        sh "docker stack deploy --compose-file docker-compose.yml docker_logs"
     }
 }

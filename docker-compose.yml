@@ -3,6 +3,7 @@ services:
   docker-logs:
     build:
       context: docker-logs
+    image: docker-logs:latest
     ports:
       - "9000:9000"
     environment:
